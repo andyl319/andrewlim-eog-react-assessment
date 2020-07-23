@@ -53,7 +53,7 @@ const createCSV = (labels: Array<string>, data: { [label: string]: Array<Measure
 export default ({ labels, data }: GraphProps) => {
   const classes = useStyles();
   const graphRef = useRef<HTMLDivElement>(null);
-  const [graph, setGraph] = useState<any>({});
+  const [graph, setGraph] = useState<any>(null);
 
   React.useEffect(() => {
     const createGraph = () => {
@@ -61,7 +61,7 @@ export default ({ labels, data }: GraphProps) => {
         const csv = createCSV(labels, data);
         // console.log(csv);
 
-        if (Object.keys(graph).length === 0) {
+        if (graph === null) {
           if (csv.length > 0) {
             const g = new Dygraph(graphRef.current, csv, {
               labels: ['Date', ...labels],
@@ -81,7 +81,7 @@ export default ({ labels, data }: GraphProps) => {
     createGraph();
   }, [labels, data, graph]);
 
-  if (labels.length === 0 && Object.keys(graph).length > 0) {
+  if (labels.length === 0 && graph) {
     graph.destroy();
     setGraph(null);
   }
@@ -93,7 +93,7 @@ export default ({ labels, data }: GraphProps) => {
       ) : (
         <>
           <CardContent>
-            <div className={classes.graph} ref={graphRef} />
+            <div id="graph" className={classes.graph} ref={graphRef} />
           </CardContent>
         </>
       )}

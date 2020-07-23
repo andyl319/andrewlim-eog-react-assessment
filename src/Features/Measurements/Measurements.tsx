@@ -44,12 +44,12 @@ export default () => {
   return (
     <Grid container direction="column" justify="center" alignItems="center" spacing={6}>
       <Graph labels={selectedMetrics} data={measurements} />
-      <Grid item direction="row">
+      <Grid item>
         <Grid container direction="row" alignItems="center" spacing={5}>
           {selectedMetrics.map(metric => {
             const lastPoint = measurements[metric][measurements[metric].length - 1];
             return (
-              <Grid item>
+              <Grid key={`kpi-${metric}`} item>
                 <KPI measurement={lastPoint} />
               </Grid>
             );

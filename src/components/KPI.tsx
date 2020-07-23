@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -25,10 +25,12 @@ export default ({ measurement }: KPIProps) => {
   const classes = useStyles();
 
   return (
-    <Card raised className={classes.KPIContainer}>
-      <CardHeader title={measurement.metric} />
-      <Typography>{measurement.value}</Typography>
-      <Typography>{measurement.unit}</Typography>
+    <Card raised>
+      <CardContent className={classes.KPIContainer}>
+        <CardHeader title={measurement.metric} />
+        <Typography>{measurement.value}</Typography>
+        <Typography>{measurement.unit}</Typography>
+      </CardContent>
     </Card>
   );
 };
