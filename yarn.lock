@@ -1366,10 +1366,22 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/dygraphs@^1.1.11":
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/@types/dygraphs/-/dygraphs-1.1.12.tgz#38f83766823deebca7554156773007b9ba5566fc"
+  integrity sha512-U2KHIU6AAfsm3kjU9QQfrE/DpyAFxKvR5R7kObTnaraAMyvobNv2QbBOFSXFreNR/VlB9pc+qjytXKLett2CTA==
+  dependencies:
+    "@types/google.visualization" "*"
+
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
   integrity sha512-OCutwjDZ4aFS6PB1UZ988C4YgwlBHJd6wCeQqaLdmadZ/7e+w79+hbMUFC1QXDNCmdyoRfAFdm0RypzwR+Qpag==
+
+"@types/google.visualization@*":
+  version "0.0.53"
+  resolved "https://registry.yarnpkg.com/@types/google.visualization/-/google.visualization-0.0.53.tgz#ab108ed74714e7f84536e39fd8829f60a8753a5c"
+  integrity sha512-K+eWwmePB7HiRgyh1VFfV4Bq/q4Nm7Ip9WMdK7NdNtvsq5amKRmRXF/j9Wvo2Ks0Px/HVn6fxL28gAsxWaQ7Eg==
 
 "@types/hoist-non-react-statics@^3.3.0":
   version "3.3.1"
@@ -3665,6 +3677,11 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     inherits "^2.0.1"
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
+
+dygraphs@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/dygraphs/-/dygraphs-2.1.0.tgz#2fbfd2c803ead02307df3faf8d4dd3ef55cb2075"
+  integrity sha1-L7/SyAPq0CMH3z+vjU3T71XLIHU=
 
 ecc-jsbn@~0.1.1:
   version "0.1.2"

@@ -5,9 +5,11 @@
   "dependencies": {
     "@material-ui/core": "^4.6.1",
     "@material-ui/icons": "^4.5.1",
+    "@types/dygraphs": "^1.1.11",
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.9.3",
     "@types/react-redux": "^7.1.5",
+    "dygraphs": "^2.1.0",
     "graphql": "^14.5.8",
     "isomorphic-fetch": "^2.2.1",
     "react": "^16.11.0",

@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions } from './reducer';
 import { useSubscription } from 'urql';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { IState } from '../../store';
 import Grid from '@material-ui/core/Grid';
+import { actions } from './reducer';
+import { IState } from '../../store';
+import Graph from '../../components/Graph';
 
 const query = `
 subscription {
@@ -41,7 +42,7 @@ export default () => {
 
   return (
     <Grid container direction="column" justify="center" alignItems="center" spacing={4}>
-      <div>{`${selectedMetrics}`}</div>
+      <Graph labels={selectedMetrics} data={measurements} />
       <Grid item xs>
         {Object.keys(measurements).map(metric => (
           <div key={metric}>
