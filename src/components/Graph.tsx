@@ -86,7 +86,7 @@ export default ({ labels, data }: GraphProps) => {
     setGraph(null);
   }
   return (
-    <Card className={classes.graphContainer}>
+    <Card raised className={classes.graphContainer}>
       <CardHeader title="Metrics" />
       {labels.length === 0 ? (
         <LinearProgress />

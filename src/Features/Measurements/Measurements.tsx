@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { actions } from './reducer';
 import { IState } from '../../store';
 import Graph from '../../components/Graph';
+import KPI from '../../components/KPI';
 
 const query = `
 subscription {
@@ -41,17 +42,19 @@ export default () => {
   if (fetching && !data) return <LinearProgress />;
 
   return (
-    <Grid container direction="column" justify="center" alignItems="center" spacing={4}>
+    <Grid container direction="column" justify="center" alignItems="center" spacing={6}>
       <Graph labels={selectedMetrics} data={measurements} />
-      <Grid item xs>
-        {Object.keys(measurements).map(metric => (
-          <div key={metric}>
-            <div>{metric}</div>
-            <div>
-              {measurements[metric].length > 0 ? measurements[metric][measurements[metric].length - 1].value : 0}
-            </div>
-          </div>
-        ))}
+      <Grid item direction="row">
+        <Grid container direction="row" alignItems="center" spacing={5}>
+          {selectedMetrics.map(metric => {
+            const lastPoint = measurements[metric][measurements[metric].length - 1];
+            return (
+              <Grid item>
+                <KPI measurement={lastPoint} />
+              </Grid>
+            );
+          })}
+        </Grid>
       </Grid>
     </Grid>
   );
