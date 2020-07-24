@@ -116,12 +116,10 @@ export default ({ labels, data, togglePause, pause, handleUserScroll }: GraphPro
   }
 
   return (
-    <Card raised className={classes.graphContainer}>
-      <CardHeader title="Metrics" />
-      {labels.length === 0 ? (
-        <LinearProgress />
-      ) : (
+    <Card className={classes.graphContainer}>
+      {labels.length === 0 ? null : (
         <>
+          <CardHeader title="Metrics" />
           <CardContent style={{ width: '100%', height: '100%' }}>
             <div id="graph" onWheel={handleUserScroll} className={classes.graph} ref={graphRef} />
             <IconButton color="primary" onClick={() => togglePause(!pause)}>

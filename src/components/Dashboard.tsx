@@ -36,6 +36,9 @@ export default () => {
         <Typography variant="h4">Dashboard</Typography>
       </Grid>
       <Grid className={classes.header} item>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Typography>Select a Metric(s) to get started!</Typography>
+        </div>
         <Provider value={client}>
           <Metrics />
         </Provider>
