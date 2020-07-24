@@ -128,7 +128,8 @@ export default ({ labels, data, togglePause, pause, handleUserScroll }: GraphPro
               {pause ? <PlayCircleFilledIcon /> : <PauseCircleFilledIcon />}
             </IconButton>
             <Typography>
-              *Scroll up on the graph in order to scroll back in time. Scroll down in order to scroll forward in time.
+              *Use the mouse wheel in order to scroll through time. Scroll up to go back in time. Scroll down to move
+              forward in time.
             </Typography>
           </CardContent>
         </>
