@@ -7,11 +7,15 @@ export type Measurement = {
   unit: string;
 };
 
+export type MeasurementsByTime = [{ measurements: Measurement[]; metric: string }];
+
 export type ApiErrorAction = {
   error: string;
 };
 
 const initialState: { [metric: string]: Measurement[] } = {};
+// number of points per 30 minute window
+const pointsPerWindow = 1800 / 1.3;
 
 const slice = createSlice({
   name: 'measurements',
@@ -25,13 +29,22 @@ const slice = createSlice({
         state[metric].push({ metric, at, value, unit });
       }
 
-      // number of points per 30 minute window
-      const pointsPerWindow = 1800 / 1.3;
       const numPoints = state[metric].length;
       const numPointsToDiscard = pointsPerWindow - numPoints;
 
       if (numPointsToDiscard < 0) {
         state[metric].shift();
+      }
+    },
+    measurementsByTimeReceived: (state, action: PayloadAction<MeasurementsByTime>) => {
+      const multipleMeasurements = action.payload;
+      for (let i = 0; i < multipleMeasurements.length; i++) {
+        let { metric, measurements } = multipleMeasurements[i];
+        const numPointsToDiscard = pointsPerWindow - measurements.length;
+        if (numPointsToDiscard < 0) {
+          measurements.slice(Math.abs(numPointsToDiscard));
+        }
+        state[metric] = measurements;
       }
     },
     measurementApiErrorReceived: (state, action: PayloadAction<ApiErrorAction>) => state,
