@@ -5,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 import PauseCircleFilledIcon from '@material-ui/icons/PauseCircleFilled';
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,6 +30,7 @@ type GraphProps = {
   data: { [label: string]: Array<Measurement> };
   pause: boolean;
   togglePause: (b: boolean) => void;
+  handleUserScroll: (e: any) => void;
 };
 
 type LegendValues = {
@@ -76,7 +78,7 @@ const legendFormatter = (data: LegendValues) => {
   return html;
 };
 
-export default ({ labels, data, togglePause, pause }: GraphProps) => {
+export default ({ labels, data, togglePause, pause, handleUserScroll }: GraphProps) => {
   const classes = useStyles();
   const graphRef = useRef<HTMLDivElement>(null);
   const [graph, setGraph] = useState<any>(null);
@@ -121,10 +123,13 @@ export default ({ labels, data, togglePause, pause }: GraphProps) => {
       ) : (
         <>
           <CardContent style={{ width: '100%', height: '100%' }}>
-            <div id="graph" className={classes.graph} ref={graphRef} />
+            <div id="graph" onWheel={handleUserScroll} className={classes.graph} ref={graphRef} />
             <IconButton color="primary" onClick={() => togglePause(!pause)}>
               {pause ? <PlayCircleFilledIcon /> : <PauseCircleFilledIcon />}
             </IconButton>
+            <Typography>
+              *Scroll up on the graph in order to scroll back in time. Scroll down in order to scroll forward in time.
+            </Typography>
           </CardContent>
         </>
       )}

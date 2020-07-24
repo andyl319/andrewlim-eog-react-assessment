@@ -32,12 +32,12 @@ query ($input: [MeasurementQuery]) {
 }
 `;
 
-const startTime = Date.now() - 1800000;
 export default () => {
   const dispatch = useDispatch();
   const { selectedMetrics } = useSelector((state: IState) => state.metrics);
   const measurements = useSelector((state: IState) => state.measurements);
   const [pause, togglePause] = useState(false);
+  const [windowTime, userScroll] = useState({ startTime: Date.now() - 1800000, endTime: Date.now() });
 
   const [measurementSubscriptionResult] = useSubscription({ query: measurementSubscription, pause });
 
@@ -59,7 +59,7 @@ export default () => {
     variables: {
       input: selectedMetrics.map(metric => {
         // start 30 min prior
-        return { metricName: metric, after: startTime };
+        return { metricName: metric, after: windowTime.startTime, before: windowTime.endTime };
       }),
     },
   });
@@ -74,9 +74,39 @@ export default () => {
 
   if (fetching && !data) return <LinearProgress />;
 
+  const handleUserScroll = (event: any) => {
+    // if not paused, pause the subscription
+    if (!pause) {
+      togglePause(!pause);
+    }
+
+    let newStart;
+    let newEnd;
+
+    // scroll up = back in time
+    if (event.deltaY < 0) {
+      newStart = windowTime.startTime - 300000;
+      newEnd = windowTime.endTime - 300000;
+    } else {
+      newStart = windowTime.startTime + 300000;
+      newEnd = windowTime.endTime + 300000;
+      if (newEnd > Date.now()) {
+        newEnd = Date.now();
+        newStart = newEnd - 1800000;
+      }
+    }
+    userScroll({ startTime: newStart, endTime: newEnd });
+  };
+
   return (
     <Grid container direction="column" justify="center" alignItems="center" spacing={6}>
-      <Graph labels={selectedMetrics} data={measurements} togglePause={togglePause} pause={pause} />
+      <Graph
+        handleUserScroll={handleUserScroll}
+        labels={selectedMetrics}
+        data={measurements}
+        togglePause={togglePause}
+        pause={pause}
+      />
       <Grid item>
         <Grid container direction="row" alignItems="center" spacing={5}>
           {selectedMetrics.map(metric => {
