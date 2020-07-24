@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSubscription, useQuery } from 'urql';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -37,8 +37,9 @@ export default () => {
   const dispatch = useDispatch();
   const { selectedMetrics } = useSelector((state: IState) => state.metrics);
   const measurements = useSelector((state: IState) => state.measurements);
+  const [pause, togglePause] = useState(false);
 
-  const [measurementSubscriptionResult] = useSubscription({ query: measurementSubscription, pause: false });
+  const [measurementSubscriptionResult] = useSubscription({ query: measurementSubscription, pause });
 
   const { fetching, data, error } = measurementSubscriptionResult;
 
@@ -75,7 +76,7 @@ export default () => {
 
   return (
     <Grid container direction="column" justify="center" alignItems="center" spacing={6}>
-      <Graph labels={selectedMetrics} data={measurements} />
+      <Graph labels={selectedMetrics} data={measurements} togglePause={togglePause} pause={pause} />
       <Grid item>
         <Grid container direction="row" alignItems="center" spacing={5}>
           {selectedMetrics.map(metric => {

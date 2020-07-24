@@ -4,8 +4,12 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import IconButton from '@material-ui/core/IconButton';
+import PauseCircleFilledIcon from '@material-ui/icons/PauseCircleFilled';
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import { makeStyles } from '@material-ui/core/styles';
 import { Measurement } from '../Features/Measurements/reducer';
+import './graph.css';
 
 const useStyles = makeStyles(theme => ({
   graphContainer: {
@@ -23,6 +27,13 @@ const useStyles = makeStyles(theme => ({
 type GraphProps = {
   labels: Array<string>;
   data: { [label: string]: Array<Measurement> };
+  pause: boolean;
+  togglePause: (b: boolean) => void;
+};
+
+type LegendValues = {
+  xHTML: string;
+  series: Array<any>;
 };
 
 const createCSV = (labels: Array<string>, data: { [label: string]: Array<Measurement> }) => {
@@ -50,7 +61,22 @@ const createCSV = (labels: Array<string>, data: { [label: string]: Array<Measure
   return csv;
 };
 
-export default ({ labels, data }: GraphProps) => {
+const legendFormatter = (data: LegendValues) => {
+  let html = `<div>Time: ${data.xHTML}</div>`;
+  data.series.forEach((series, i) => {
+    if (!series.isVisible) return;
+    let { yHTML } = series;
+    const labeledData = `
+        <div class="dygraph-legend-row">
+          ${series.dashHTML}
+          <div>${series.labelHTML}: ${yHTML}</div>
+        </div>`;
+    html += labeledData;
+  });
+  return html;
+};
+
+export default ({ labels, data, togglePause, pause }: GraphProps) => {
   const classes = useStyles();
   const graphRef = useRef<HTMLDivElement>(null);
   const [graph, setGraph] = useState<any>(null);
@@ -59,12 +85,13 @@ export default ({ labels, data }: GraphProps) => {
     const createGraph = () => {
       if (graphRef.current !== null) {
         const csv = createCSV(labels, data);
-        // console.log(csv);
 
         if (graph === null) {
           if (csv.length > 0) {
             const g = new Dygraph(graphRef.current, csv, {
               labels: ['Date', ...labels],
+              legendFormatter: legendFormatter,
+              legend: 'follow',
             });
             setGraph(g);
           }
@@ -85,6 +112,7 @@ export default ({ labels, data }: GraphProps) => {
     graph.destroy();
     setGraph(null);
   }
+
   return (
     <Card raised className={classes.graphContainer}>
       <CardHeader title="Metrics" />
@@ -92,8 +120,11 @@ export default ({ labels, data }: GraphProps) => {
         <LinearProgress />
       ) : (
         <>
-          <CardContent>
+          <CardContent style={{ width: '100%', height: '100%' }}>
             <div id="graph" className={classes.graph} ref={graphRef} />
+            <IconButton color="primary" onClick={() => togglePause(!pause)}>
+              {pause ? <PlayCircleFilledIcon /> : <PauseCircleFilledIcon />}
+            </IconButton>
           </CardContent>
         </>
       )}
